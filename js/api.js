@@ -36,14 +36,14 @@ const Api = (() => {
   }
 
   return {
-    onLog,
+    onLog,//ME 
     users: {
       list: () => request('GET', '/users'),
-      //get: (id) => request('GET', `/users/${id}`),
-      get: (username) => request('GET', `/users/byusername/${username}`), //ME
-      create: (u) => request('POST', '/users', u),
-      update: (id, u) => request('PATCH', `/users/${id}`, u),
-      remove: (id) => request('DELETE', `/users/${id}`),
+        get: (userName) => request('GET', `/users/byusername/${encodeURIComponent(userName)}`),
+        getByUsername: (userName) => request('GET', `/users/byusername/${encodeURIComponent(userName)}`),
+        create: (u) => request('POST', '/users', u),
+        update: (id, u) => request('PATCH', `/users/${id}`, u),
+        remove: (id) => request('DELETE', `/users/${id}`),
     },
     tasks: {
       list: (uid) => request('GET', `/users/${uid}/tasks`),

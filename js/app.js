@@ -55,18 +55,20 @@
     openUserDialog(null, true);
   };
 
-  $('login-form').onsubmit = (e) => { //E
-      e.preventDefault();
-      guard(async () => {
-        const name = $('login-username').value.trim().toLowerCase();
-        if (!name) {return};
-    
-        const found = await Api.users.getByUsername(name);
-        if (!found) {throw new Error('Usuario no encontrado')};
-        
-        startSession(found);
-      });
-    };
+  $('login-form').onsubmit = (e) => {//NAME VS USERNAME
+        e.preventDefault();
+        guard(async () => {
+          const name = $('login-username').value.trim().toLowerCase();
+          if (!name) {return};
+      
+          // Pasamos la variable "name" que acabamos de crear arriba
+          const found = await Api.users.get(name);
+          
+          if (!found) {throw new Error('Usuario no encontrado')};
+          
+          startSession(found);
+        });
+      };
 
   function startSession(user) {
     currentUser = user;
