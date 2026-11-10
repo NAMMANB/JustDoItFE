@@ -194,8 +194,21 @@
         select,
         el('div', { class: 'row' },
           el('button', { class: 'btn ghost small', onclick: () => openTaskDialog(t) }, 'Editar'),
+          t.status !== 'DONE' ? el('button', { class: 'btn secondary small', onclick: () => advanceTaskStatus(t) }, 'Avanzar'): '',
           el('button', { class: 'btn danger small', onclick: () => deleteTask(t) }, 'Eliminar'))));
     });
+  }
+
+  function advanceTaskStatus(task) {
+    let newStatus = null;
+    if (task.status === 'PENDING') {newStatus = 'INPROGRESS';}
+    else if (task.status === 'INPROGRESS') {newStatus = 'DONE';}
+    if (newStatus) {
+      guard(async () => {
+        await Api.tasks.update(targetUserId(), task.id, { status: newStatus });
+        await loadTasks();
+      });
+    };
   }
 
   function openTaskDialog(task) {
