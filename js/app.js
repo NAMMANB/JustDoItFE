@@ -61,7 +61,7 @@
         const name = $('login-username').value.trim().toLowerCase();
         if (!name) {return};
     
-        const found = await Api.users.getByUsername(name);
+        const found = await Api.users.getByUserName(name);
         if (!found) {throw new Error('Usuario no encontrado')};
         
         startSession(found);
