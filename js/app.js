@@ -55,16 +55,18 @@
     openUserDialog(null, true);
   };
 
-  $('login-form').onsubmit = (e) => {
-    e.preventDefault();
-    guard(async () => {
-      const name = $('login-username').value.trim().toLowerCase();
-      const list = await Api.users.list();
-      const found = list.find((u) => (u.userName || '').toLowerCase() === name);
-      if (!found) throw new Error('Usuario no encontrado');
-      startSession(found);
-    });
-  };
+  $('login-form').onsubmit = (e) => { //E
+      e.preventDefault();
+      guard(async () => {
+        const name = $('login-username').value.trim().toLowerCase();
+        if (!name) {return};
+    
+        const found = await Api.users.getByUsername(name);
+        if (!found) {throw new Error('Usuario no encontrado')};
+        
+        startSession(found);
+      });
+    };
 
   function startSession(user) {
     currentUser = user;
